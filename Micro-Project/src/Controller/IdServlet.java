@@ -1,20 +1,30 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.DAO.ClientDAO;
-import com.DAO.ClientDAOImlp;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+//import javax.persistence.Persistence;
+//import javax.persistence.Query;
+
+//import com.DAO.ClientDAO;
+//import com.DAO.ClientDAOImlp;
 import com.Model.ClientModel;
+
+//import business.clients;
 
 /**
  * Servlet implementation class IdServlet
  */
 @WebServlet("/IdServlet")
+
 public class IdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -44,17 +54,31 @@ public class IdServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
+		EntityManagerFactory emf = (EntityManagerFactory)getServletContext().getAttribute("emf");
+		EntityManager em = emf.createEntityManager();
+		try {
+		//Return Client
 		String email=request.getParameter("email");
 		String mdp=request.getParameter("mdp");
-		ClientModel cd= new ClientDAOImlp().verify(email, mdp);
-		if(cd!=null) {
-			request.setAttribute("Client", cd);
+		//ClientModel cd= new ClientDAOImlp().verify(email, mdp);
+		
+		String query1 ="SELECT e "+"FROM clients e "+" WHERE e.Email='"+email+"' AND e.MotPasse='"+mdp+"'";
+
+		List<ClientModel> clients =em.createQuery(query1,ClientModel.class).getResultList();
+		if(clients!=null) {
+			request.setAttribute("Client", clients);
 			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 		}else {
 			//response.getWriter().append("Veuiller ressayer svp !!!");
 			System.out.println("error");
 			request.setAttribute("Erreur", "Email ou Mot de Passe est incorrect Veuiller ressayer svp !!!");
 			request.getRequestDispatcher("identifier.jsp").forward(request, response);
+		}
+		}finally {
+			//ferme la connection 
+			if(em.getTransaction().isActive())
+				em.getTransaction().rollback();
+			em.close();
 		}
         
         

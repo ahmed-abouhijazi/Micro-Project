@@ -1,6 +1,19 @@
 package com.Model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity 
+@Table (name="clients")
+
 public class ClientModel {
+	@Id
+	@Column(name="Id")
+	@GeneratedValue( strategy=GenerationType.AUTO)
 private int Id;
 private String Email;
 private String Nom;
