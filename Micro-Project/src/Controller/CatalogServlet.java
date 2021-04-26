@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.DAO.ArticleDAOImlp;
+//import com.DAO.ArticleDAOImlp;
 import com.Model.ArticleModel;
 
 /**
@@ -42,8 +42,8 @@ public class CatalogServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		String type = request.getParameter("Type");
-		List<ArticleModel> articles = new ArticleDAOImlp().ArticleParType(type);
-		request.setAttribute("articles", articles);
+		//List<ArticleModel> articles = new ArticleDAOImlp().ArticleParType(type);
+		//request.setAttribute("articles", articles);
 		request.getRequestDispatcher("catalogue.jsp").forward(request, response);
 	}
 

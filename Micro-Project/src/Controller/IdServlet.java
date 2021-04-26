@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 //import javax.persistence.Persistence;
 //import javax.persistence.Query;
+import javax.persistence.PersistenceUnit;
 
 //import com.DAO.ClientDAO;
 //import com.DAO.ClientDAOImlp;
@@ -24,10 +25,10 @@ import com.Model.ClientModel;
  * Servlet implementation class IdServlet
  */
 @WebServlet("/IdServlet")
-
+@PersistenceUnit(unitName="GI4")
 public class IdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -62,7 +63,7 @@ public class IdServlet extends HttpServlet {
 		String mdp=request.getParameter("mdp");
 		//ClientModel cd= new ClientDAOImlp().verify(email, mdp);
 		
-		String query1 ="SELECT e "+"FROM clients e "+" WHERE e.Email='"+email+"' AND e.MotPasse='"+mdp+"'";
+		String query1 ="SELECT e "+"FROM ClientModel e "+" WHERE e.Email='"+email+"' AND e.MotPasse='"+mdp+"'";
 
 		List<ClientModel> clients =em.createQuery(query1,ClientModel.class).getResultList();
 		if(clients!=null) {
